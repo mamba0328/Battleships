@@ -10,16 +10,17 @@ class Player {
     }
 
     sendAttack(attackCoordinates = [1, 1]) {
-        if(typeof(attackCoordinates) != 'object') return 'Coordinates '
+        if (typeof (attackCoordinates) != 'object') return 'Coordinates';
         
         if (this.name == 'bot') { 
             this.botsAttack()
         } else { 
+            let existingShot = this.shots.filter((shot) => { 
+                return ishot[0] == attackCoordinates[0] && shot[1] == attackCoordinates[1]
+            })
 
-            for (let i = 0; i < this.shots.length; i++){ 
-              if (this.shots[i][0] == attackCoordinates[0] && this.shots[i][1] == attackCoordinates[1]) return 'You shot here already'
-            }
-
+            if (existingShot.length > 0) return 'You shoot here already'
+            
             this.opponentsField.recieveAttack(attackCoordinates);
             this.shots.push(attackCoordinates)
         }
@@ -32,17 +33,22 @@ class Player {
         this.opponentsField.recieveAttack(this.findUnshootedSpot());
     }
 
-    findUnshootedSpot() { 
+    findUnshootedSpot() {
         mainLoop:
-        while (0 > 1) { 
+        while (0 < 1) { 
             let x = Math.round(Math.random() * 10); 
             let y = Math.round(Math.random() * 10);
             
             for (let i = 0; i < this.shots.length; i++){ 
-                if (this.shots[i][0] == x && this.shots[i][1] == y) continue mainLoop
+                let searchedCoordinates = this.shots.filter((arr) => {
+                        return arr[j][0] == x && arr[j][1] == y
+                })
+                //if searchedCoordinates already exist it means that shot on such location was alredy done
+                if(searchedCoordinates.length > 0) continue mainLoop
             }
 
             this.shots.push([x, y]);
+            console.log([x,y])
             return [x, y]
         }
     }

@@ -2,7 +2,7 @@ import createShip from './createShip'
 import createField from './createField'
 import Player from './Player'
 
-test('isSunk', () => {
+test('ship is isSunk', () => {
     let battlship = createShip(2); 
     battlship.hit()
     battlship.hit()
@@ -13,6 +13,29 @@ test('Ship was hitted after attack', () => {
     const playersField = createField()
     playersField.placeShip([1, 1], 1, 'x')
     playersField.recieveAttack([1, 1])
+    expect(playersField.ships.onecells.first.hits).toBe(1);
+})
+test('Second ship was hitted after attack', () => { 
+    const playersField = createField()
+    playersField.placeShip([1, 1], 1, 'x')
+    playersField.placeShip([1, 3], 1, 'x')
+    playersField.recieveAttack([1, 3])
+    expect(playersField.ships.onecells.second.hits).toBe(1);
+})
+
+
+test('Ship was`t hitted after missed attack', () => { 
+    const playersField = createField()
+    playersField.placeShip([3, 4], 1, 'x')
+    playersField.recieveAttack([3, 1])
+    expect(playersField.ships.onecells.first.hits).toBe(0);
+})
+
+
+test('Ship was hitted at different spot', () => { 
+    const playersField = createField()
+    playersField.placeShip([10, 7], 1, 'x')
+    playersField.recieveAttack([10, 7])
     expect(playersField.ships.onecells.first.hits).toBe(1);
 })
 
@@ -73,8 +96,8 @@ test('Create one randomized ship', () => {
     expect(playersField.ships.onecells.first)
 })
 
-test.only('Randomize all ships', () => { 
+test('Randomize all ships', () => { 
     const playersField = createField();
     playersField.createRandomizedFleet();
-    expect(playersField.coordinates.ofShips.length).toBe(10)
+    expect(playersField.coordinates.ofShips.length).toBe(20)
 })
