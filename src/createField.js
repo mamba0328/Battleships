@@ -34,7 +34,7 @@ function createField() {
 
         //methods 
         placeShip(position, cells, mainAxe) {
-            console.log(position, cells, mainAxe)
+
             if (typeof (position) != 'object') {
                 return 'typeof coordinates is invalid, use obj'
             }
@@ -64,7 +64,6 @@ function createField() {
             //check either coordinates matches ships coordianates
             if (this.isShipExistOn(attackAt)) {
                 //if they do => hit ship at this coordinates
-                console.log('i do recieve attack')
                 this.hitShipOn(attackAt)
                 //game ends?
                 this.areAllShipsSunk()
@@ -73,7 +72,6 @@ function createField() {
                 //show it at the field
             } else {
                 //if they don't => keep coordinates of miss 
-                console.log('i don`t recieve attack')
                 this.coordinates.ofMissedAttacks.push(attackAt)
                 //let player that miss pass turn 
                 this.lastShotHit = 'false'
@@ -192,7 +190,6 @@ function createField() {
                             increaser = 0; 
                             continue mainLoop
                         } else if (x + increaser > 10) {
-                            console.log('i restart')
                             coordianates = []; 
                             increaser = 0; 
                             continue mainLoop
@@ -221,7 +218,6 @@ function createField() {
                             increaser = 0; 
                             continue mainLoop
                         } else if (y + increaser > 10) {
-                             console.log('i restart')
                             coordianates = []; 
                             increaser = 0; 
                             continue mainLoop
