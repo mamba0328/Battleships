@@ -1,4 +1,4 @@
-import { check } from "prettier"
+import { check, doc } from "prettier"
 import createShip from "./createShip"
 
 function createField() { 
@@ -42,7 +42,7 @@ function createField() {
             const allCoordinates = coordinatesOfEachCell(position, cells, mainAxe);
 
             if (this.isShipExistOn(allCoordinates)) {
-                return 'ship exist at such location'
+                return alert('you can`t place ship here')
             }
 
             //mechanic of placing 
@@ -60,7 +60,11 @@ function createField() {
             */
         },
 
-        recieveAttack(attackAt) {
+        recieveAttack(attackAt, whoAttacked = 'player') {
+            const cellsWithCoordinatesOfAttack = document.getElementsByClassName(`${attackAt[0]},${attackAt[1]}`)
+            let attackedCell = cellsWithCoordinatesOfAttack[1];
+            whoAttacked == 'bot' ? attackedCell = cellsWithCoordinatesOfAttack[0] : cellsWithCoordinatesOfAttack[1];
+            console.log(attackAt)
             //check either coordinates matches ships coordianates
             if (this.isShipExistOn(attackAt)) {
                 //if they do => hit ship at this coordinates
@@ -70,28 +74,29 @@ function createField() {
                 //let player that hit make turn again
                 this.lastShotHit = 'true'
                 //show it at the field
+                attackedCell.classList.add('hitted')
             } else {
                 //if they don't => keep coordinates of miss 
                 this.coordinates.ofMissedAttacks.push(attackAt)
                 //let player that miss pass turn 
                 this.lastShotHit = 'false'
                 //show it at the field
+                attackedCell.classList.add('missed')
             }
         },
 
-        areAllShipsSunk() {
+        areAllShipsSunk() {//end of the game
             for (let xcells in this.ships) {
                 for (let byOrder in this.ships[xcells]) {
                     if (this.ships[xcells][byOrder] == null) continue
                 
                     const sinkingOfShip = this.ships[xcells][byOrder].sink;
                     if (sinkingOfShip == 'false') {
-                        return console.log(false)
+                        return false
                     }
-                    
                 }
             }
-            return console.log(true)
+            return true
         },
 
         //suport methods

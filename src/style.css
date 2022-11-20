@@ -14,8 +14,76 @@ html, body {
     height: 100%;
     width: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
+}
+
+#shipArea { 
+    height: 50%;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    background-color: aliceblue;
+}
+
+#shipAreaY {
+    height: 50%;
+    width: 20%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: aliceblue;
+}
+
+.draggableShip{ 
+    min-width: 10px;
+    min-height: 10px;
+    background-color: rgb(140, 0, 255);
+    margin: 0.1em 1em;
+    cursor: grab;
+}
+
+.draggableShip:hover { 
+    border: 2px solid rgb(234, 0, 255);
+}
+
+#fourcell{ 
+    height: 2rem;
+    width: 8rem;
+}
+
+#fourcellY{
+    height: 8rem;
+    width: 2rem;
+}
+
+#threecell {
+    height: 2rem;
+    width: 6rem;
+}
+
+#threecellY {
+    height: 6rem;
+    width: 2rem;
+}
+
+#twocellY {
+    height: 4rem;
+    width: 2rem;
+}
+
+#twocell {
+    height: 2rem;
+    width: 4rem;
+}
+
+#onecell {
+    height: 2rem;
+    width: 2rem;
+}
+
+.dragging { 
+    opacity: 0.5;
+    cursor:not-allowed;
 }
 
 #gamearea {
@@ -31,14 +99,49 @@ html, body {
 .battlefield{
     width: clamp(100px, 20rem, 40%);
     height: clamp(100px, 20rem, 100%);
+    min-height: 100px;
+    min-width: 100px;
     background-color: antiquewhite;
     display: flex;
     flex-wrap: wrap;
 }
+
+#my{ 
+        background-color: rgb(198, 252, 255);
+}
+
+[data = 'unclickable'] {
+    pointer-events: none
+}
+
 
 .cell{
     width: 10%;
     height: 10%;
     border: 1px dashed black;
     background-color: transparent;
+    cursor: crosshair;
+}
+
+.cell#ship {
+   background-color: rgb(140, 0, 255);
+   cursor: pointer;
+}
+
+.cell.hitted#ship {
+    background-color: rgb(255, 0, 0);
+    cursor: pointer;
+}
+
+
+.cell:hover{ 
+    background-color: rgba(256,256,256);
+}
+
+.cell.hitted{ 
+    background-color: red;
+}
+
+.cell.missed {
+    background-color: rgb(122, 122, 122);
 }
