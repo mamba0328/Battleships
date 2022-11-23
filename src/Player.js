@@ -1,12 +1,13 @@
 import createField from "./createField"
 
 class Player { 
-    constructor(name, opponentsField = undefined) { 
+    constructor(name, bot) { 
         this.name = name;
         this.shots = [];
-        this.field = createField();
+        this.field = createField(bot);
         this.lastShotHit = 'false';
-        this.opponentsField = opponentsField; 
+        this.opponentsField = null;
+        this.currentAxe = 'x'
     }
 
     sendAttack(attackCoordinates = [1, 1]) {
@@ -54,9 +55,129 @@ class Player {
             
 
             this.shots.push([x, y]);
-            console.log([x,y])
             return [x, y]
         }
+    }
+
+    createBattlefields() {
+        const battleFields = document.querySelectorAll('.battlefield');
+        const arraiedBattleFields = Array.from(battleFields);
+        if (this.name == 'bot') { 
+            this.fillBattlfieldWithCells(arraiedBattleFields[1])
+        } else { 
+            this.fillBattlfieldWithCells(arraiedBattleFields[0])
+            this.makeDraggabalesResponive()
+        } 
+    }
+
+    makeDraggabalesResponive() {
+        const draggables = document.querySelectorAll('.draggableShip')
+
+        draggables.forEach((element) => { 
+            element.addEventListener('dragstart', (e) => { 
+                e.target.classList.add('dragging');
+            })
+                
+            element.addEventListener('dragend', (e) => {
+
+                let numberOfCellInShip = 1; 
+                if (e.target.id.includes('fourcell')) { 
+                    numberOfCellInShip = 4;
+                } else if (e.target.id.includes('threecell')) { 
+                    numberOfCellInShip = 3;
+                } else if (e.target.id.includes('twocell')) { 
+                    numberOfCellInShip = 2;
+                }
+                    
+                e.target.classList.remove('dragging');
+                    
+                const cellOnWhichDrop = document.elementFromPoint(e.clientX, e.clientY);
+                const coordsOfTheCell = cellOnWhichDrop.classList[1];
+
+                const separeter = coordsOfTheCell.indexOf(',');
+                const eTargetCoords = [parseFloat(coordsOfTheCell.slice(0, separeter)), parseFloat(coordsOfTheCell.slice(separeter + 1))];
+
+                this.field.placeShip(eTargetCoords, numberOfCellInShip, this.currentAxe)
+                e.target.classList.add('dragging');
+            })
+                
+            element.addEventListener('click', () => { 
+                this.changeAxeOfShips()
+            })
+        })
+    }
+
+    changeAxeOfShips() {
+        if(this.currentAxe == 'x'){ 
+            const shipArea = document.getElementById('shipArea');
+            this.changeId(shipArea, 'shipArea', 'shipAreaY');
+            const allShips = shipArea.children
+            Array.from(allShips).forEach(ship => { 
+            const oldId = ship.id; 
+            if (oldId == 'onecell') return; 
+            const newId = ship.id + 'Y';
+            this.changeId(ship, oldId, newId)
+            })
+            this.currentAxe = 'y'
+        } else {
+            const shipArea = document.getElementById('shipAreaY');
+            this.changeId(shipArea, 'shipAreaY', 'shipArea');
+            const allShips = shipArea.children
+            Array.from(allShips).forEach(ship => { 
+            const oldId = ship.id; 
+            if (oldId == 'onecell') return; 
+            const letterY = oldId.indexOf('Y');
+            const newId = oldId.slice(0, letterY)
+            this.changeId(ship, oldId, newId)
+            this.currentAxe = 'x'
+        })
+        }   
+    }
+
+    changeId(elem, oldId, newId) { 
+        elem.removeAttribute('id', oldId);
+        elem.setAttribute('id', newId)
+    }
+
+    makeCellResponsible(cell) {
+        cell.addEventListener('click', (e) => {
+            if (e.target.parentElement.id == 'my') {
+                return this.field.areAllShipsPlaced() ? console.log() : alert('You need to place all ships first. Drug them from the right side to the field.');
+            } 
+            
+            const coordinatesOfCell = this.getCoordinatesOfCell(e);//get coords of attack
+            if (Array.from(e.target.classList).includes('hitted') || Array.from(e.target.classList).includes('missed')) return //prevents hitting same spot
+            
+            this.field.recieveAttack(coordinatesOfCell)
+            this.sendAttack()
+        })    
+    }
+
+    getCoordinatesOfCell(e) { 
+        const coordinates = e.target.classList[1];//where coords keeps
+
+        const separeter = coordinates.indexOf(',');
+        const eTargetCoords = [parseFloat(coordinates.slice(0, separeter)), parseFloat(coordinates.slice(separeter + 1))];
+        return eTargetCoords
+    }
+
+        
+    fillBattlfieldWithCells(battleField) {
+        let x = 1; 
+        let y = 10; 
+        for (let i = 0; i < 100; i++) {
+        if (x == 11) { 
+            --y
+            x = 1;
+        }
+        const cell = document.createElement('div');
+        cell.classList.add('cell')
+        this.makeCellResponsible(cell)
+        if (this.name != 'bot') cell.setAttribute('data','animated')
+        cell.classList.add(`${x},${y}`)
+        battleField.appendChild(cell)
+        x++
+        }   
     }
 }
 

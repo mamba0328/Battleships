@@ -2,7 +2,6 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: rgb(252, 145, 145);
 }
 
 html, body { 
@@ -15,35 +14,43 @@ html, body {
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-around;
+    background: linear-gradient(0.25turn, #004a69, #3cbbf6);;
 }
 
 #shipArea { 
-    height: 50%;
-    width: 20%;
+    max-width: 20%;
     display: flex;
     flex-direction: column;
-    background-color: aliceblue;
+    background-color: rgba(240, 248, 255, 0.11);
+    border-radius: 1em;
+    margin: 1em;
 }
 
 #shipAreaY {
-    height: 50%;
     width: 20%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    background-color: aliceblue;
+    background-color: rgba(240, 248, 255, 0.11);
+    border-radius: 1em;
+    margin: 1em;
 }
 
 .draggableShip{ 
     min-width: 10px;
     min-height: 10px;
-    background-color: rgb(140, 0, 255);
-    margin: 0.1em 1em;
+    background-color: rgb(181, 202, 172);
+    margin: 0.5em;
     cursor: grab;
+    border: 2px solid grey;
+    -webkit-animation: blink 1s infinite;
+    -moz-animation: blink 1s infinite;
+    -ms-animation: blink 1s infinite;
 }
 
 .draggableShip:hover { 
-    border: 2px solid rgb(234, 0, 255);
+    border: 2px solid #3cbbf6;
 }
 
 #fourcell{ 
@@ -89,11 +96,12 @@ html, body {
 #gamearea {
     height: 80%;
     width: 80%;
-    background-color: rgba(221, 221, 221, 0.123);
+    background-color: rgba(255, 255, 255, 0.247);
     display: flex;
     border-radius: 3em;
     justify-content: space-around;
     align-items: center;
+    margin: 0 1em;
 }
 
 .battlefield{
@@ -101,13 +109,13 @@ html, body {
     height: clamp(100px, 20rem, 100%);
     min-height: 100px;
     min-width: 100px;
-    background-color: antiquewhite;
+    background-color: rgb(255, 255, 255);
     display: flex;
     flex-wrap: wrap;
 }
 
 #my{ 
-        background-color: rgb(198, 252, 255);
+    background-color: rgb(255, 255, 255);
 }
 
 [data = 'unclickable'] {
@@ -118,13 +126,21 @@ html, body {
 .cell{
     width: 10%;
     height: 10%;
-    border: 1px dashed black;
+    border: 1px dashed rgb(0, 110, 255);
     background-color: transparent;
     cursor: crosshair;
 }
 
+[data = animated] {
+    border: 1px solid;
+    -webkit-animation: blink 1s infinite;
+    -moz-animation: blink 1s infinite;
+    -ms-animation: blink 1s infinite;
+}
+
+
 .cell#ship {
-   background-color: rgb(140, 0, 255);
+   background-color: rgb(181, 202, 172);
    cursor: pointer;
 }
 
@@ -135,7 +151,7 @@ html, body {
 
 
 .cell:hover{ 
-    background-color: rgba(256,256,256);
+    background-color: rgb(174, 208, 252);
 }
 
 .cell.hitted{ 
@@ -143,5 +159,48 @@ html, body {
 }
 
 .cell.missed {
-    background-color: rgb(122, 122, 122);
+    background-color: rgb(92, 162, 255);
 }
+
+@-webkit-keyframes blink {
+    0% {
+        border-color: red;
+    }
+
+    50% {
+        border-color: green;
+    }
+
+    100% {
+        border-color: red;
+    }
+}
+
+@-moz-keyframes blink {
+    0% {
+        border-color: red;
+    }
+
+    50% {
+        border-color: green;
+    }
+
+    100% {
+        border-color: red;
+    }
+}
+
+@-ms-keyframes blink {
+    0% {
+        border-color: red;
+    }
+
+    50% {
+        border-color: green;
+    }
+
+    100% {
+        border-color: red;
+    }
+}
+

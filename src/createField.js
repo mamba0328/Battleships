@@ -1,7 +1,7 @@
 import { check, doc } from "prettier"
 import createShip from "./createShip"
 
-function createField() { 
+function createField(bot = false) { 
     return {
         ships: {
             onecells: {
@@ -29,12 +29,14 @@ function createField() {
 
         coordinates: {
             ofShips: [],
-            ofMissedAttacks: [],
+            ofMissedAttacks:[],
         },
+
+        isBot: bot, 
 
         //methods 
         placeShip(position, cells, mainAxe) {
-
+            
             if (typeof (position) != 'object') {
                 return 'typeof coordinates is invalid, use obj'
             }
@@ -42,35 +44,37 @@ function createField() {
             const allCoordinates = coordinatesOfEachCell(position, cells, mainAxe);
 
             if (this.isShipExistOn(allCoordinates)) {
-                return alert('you can`t place ship here')
+                return console.log('you can`t place ship here')
+            } else if (mainAxe == 'x' && (position[0] + cells - 1> 10)) {
+                return console.log('you can`t place ship here')
+            } else if (mainAxe == 'y' && (position[1] + cells - 1> 10)) {
+                return console.log('you can`t place ship here')
             }
 
             //mechanic of placing 
             this.defineShipInItsGroup(allCoordinates, cells, mainAxe)
-            /*
-            if (cells == 1) {
-                this.createShip(this.ships.onecells, allCoordinates, cells, mainAxe)
-            } else if (cells == 2) { 
-                this.createShip(this.ships.twocells, allCoordinates, cells, mainAxe)
-            } else if (cells == 3) { 
-               this.createShip(this.ships.threecells, allCoordinates, cells, mainAxe)
-            } else if (cells == 4) { 
-                this.createShip(this.ships.fourcells, allCoordinates, cells, mainAxe)
-            }  
-            */
+
+            if (this.isBot) return
+            
+            allCoordinates.forEach(array => {
+                const cells = document.getElementsByClassName(`${array[0]},${array[1]}`);
+                const cell = cells[0] //left field
+                cell.setAttribute('id', 'ship')
+            })
+
+            this.startTheGame(this.areAllShipsPlaced())
         },
 
         recieveAttack(attackAt, whoAttacked = 'player') {
             const cellsWithCoordinatesOfAttack = document.getElementsByClassName(`${attackAt[0]},${attackAt[1]}`)
-            let attackedCell = cellsWithCoordinatesOfAttack[1];
-            whoAttacked == 'bot' ? attackedCell = cellsWithCoordinatesOfAttack[0] : cellsWithCoordinatesOfAttack[1];
-            console.log(attackAt)
+            let attackedCell = cellsWithCoordinatesOfAttack[0];
+            whoAttacked == 'bot' ? attackedCell = cellsWithCoordinatesOfAttack[0] : attackedCell = cellsWithCoordinatesOfAttack[1];
             //check either coordinates matches ships coordianates
             if (this.isShipExistOn(attackAt)) {
                 //if they do => hit ship at this coordinates
                 this.hitShipOn(attackAt)
                 //game ends?
-                this.areAllShipsSunk()
+                if (this.areAllShipsSunk()) this.theGameEnds()
                 //let player that hit make turn again
                 this.lastShotHit = 'true'
                 //show it at the field
@@ -99,7 +103,6 @@ function createField() {
             return true
         },
 
-        //suport methods
         makeShip(areaToPlace, allCoordinates, cells) {
             for (let ship in areaToPlace) {
                 if (areaToPlace[ship] == null) {
@@ -249,6 +252,41 @@ function createField() {
                 this.placeShipAtRandomPosition(3)
                 this.placeShipAtRandomPosition(4)
         },
+
+        theGameEnds(){ 
+            if (confirm('The game has ended, wanna replay')) { 
+                        document.location.reload();
+            } else { 
+                alert('there`s nothing left to do, enjoy your self')
+
+                const fields = document.getElementsByClassName('battlefield');
+                Array.from(fields).forEach(field => { 
+                    field.setAttribute('data', 'unclickable');
+                })
+            }
+        }, 
+
+       areAllShipsPlaced(field) { 
+            return field.coordinates.ofShips.length == 20 ?  true : false ; 
+        },
+
+        startTheGame(boolean) {
+            if (boolean == false) return; 
+            const draggableShips = document.getElementById('shipArea') || document.getElementById('shipAreaY') ;
+            draggableShips.style.display = 'none'; 
+
+            const opponentsField = document.getElementById('oponents');
+            opponentsField.removeAttribute('data', 'unclickable');
+
+            const cells = document.getElementsByClassName('cell');
+            Array.from(cells).forEach(element => {
+                element.removeAttribute('data')
+            });
+        },
+
+        areAllShipsPlaced() { 
+         return this.coordinates.ofShips.length == 20 ?  true : false ; 
+        }
     
     }
 }
