@@ -8,7 +8,8 @@ const gameLoop = function () {
     bot.opponentsField = player.field;
     player.createBattlefields();
     bot.createBattlefields();
-    bot.field.createRandomizedFleet();
+    player.field.createRandomizedFleet();
+    console.log(player)
 }
 
 gameLoop()

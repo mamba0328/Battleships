@@ -29,7 +29,8 @@ function createField(bot = false) {
 
         coordinates: {
             ofShips: [],
-            ofMissedAttacks:[],
+            ofMissedAttacks: [],
+            ofReservedArea: [],
         },
 
         isBot: bot, 
@@ -53,7 +54,7 @@ function createField(bot = false) {
 
             //mechanic of placing 
             this.defineShipInItsGroup(allCoordinates, cells, mainAxe)
-
+            this.reseveArea(allCoordinates, mainAxe)
             if (this.isBot) return
             
             allCoordinates.forEach(array => {
@@ -108,7 +109,7 @@ function createField(bot = false) {
                 if (areaToPlace[ship] == null) {
                     areaToPlace[ship] = createShip(cells);
                     areaToPlace[ship].coordinates = allCoordinates;
-                    this.coordinates.ofShips.push(...allCoordinates)
+                    this.coordinates.ofShips.push(...allCoordinates);
                     break
                 }
             }
@@ -189,7 +190,7 @@ function createField(bot = false) {
                     
 
                     for (let i = 0; i < lengthOfShip; i++){ 
-                        let shipOn = this.coordinates.ofShips.filter((ship) => { 
+                        let shipOn = this.coordinates.ofReservedArea.filter((ship) => { 
                             return ship[0] == (x + increaser) && ship[1] == y
                         })
 
@@ -217,7 +218,7 @@ function createField(bot = false) {
                     } 
                     
                     for (let i = 0; i < lengthOfShip; i++){
-                        let shipOn = this.coordinates.ofShips.filter((ship) => { 
+                        let shipOn = this.coordinates.ofReservedArea.filter((ship) => { 
                             return ship[0] == x  && ship[1] == (y + increaser)
                         })
 
@@ -286,8 +287,48 @@ function createField(bot = false) {
 
         areAllShipsPlaced() { 
          return this.coordinates.ofShips.length == 20 ?  true : false ; 
+        },
+        
+        reseveArea(coordianates, mainAxe) {
+            if (coordianates == null || coordianates == undefined) return
+            
+            const reserve = [];
+            if (mainAxe == 'x') { 
+                for (let i = 0; i < coordianates.length; i++) {
+                    if (i == 0) {
+                        reserve.push([coordianates[i][0] - 1, coordianates[i][1]])
+                        reserve.push([coordianates[i][0] - 1, coordianates[i][1] + 1])
+                        reserve.push([coordianates[i][0] - 1, coordianates[i][1] - 1])
+                    }
+
+                    if (i == coordianates.length - 1) {
+                        reserve.push([coordianates[i][0] + 1, coordianates[i][1]])
+                        reserve.push([coordianates[i][0] + 1, coordianates[i][1] + 1])
+                        reserve.push([coordianates[i][0] + 1, coordianates[i][1] - 1])
+                    }
+
+                    reserve.push([coordianates[i][0], coordianates[i][1] + 1])
+                    reserve.push([coordianates[i][0], coordianates[i][1] - 1])
+                }
+            } else { 
+                for (let i = 0; i < coordianates.length; i++) {
+                    if (i == 0) {
+                        reserve.push([coordianates[i][0], coordianates[i][1] - 1] )
+                        reserve.push([coordianates[i][0] + 1, coordianates[i][1] - 1])
+                        reserve.push([coordianates[i][0] - 1, coordianates[i][1] - 1])
+                    }
+                    if (i == coordianates.length - 1) {
+                        reserve.push([coordianates[i][0], coordianates[i][1] + 1 ])
+                        reserve.push([coordianates[i][0] + 1, coordianates[i][1] + 1])
+                        reserve.push([coordianates[i][0] - 1, coordianates[i][1] + 1])
+                    }
+                        reserve.push([coordianates[i][0] + 1, coordianates[i][1]])
+                        reserve.push([coordianates[i][0] - 1, coordianates[i][1]])
+                }
+            }
+            reserve.push(...coordianates);
+            this.coordinates.ofReservedArea.push(...reserve)
         }
-    
     }
 }
 
