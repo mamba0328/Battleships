@@ -8,8 +8,9 @@ const gameLoop = function () {
     bot.opponentsField = player.field;
     player.createBattlefields();
     bot.createBattlefields();
-    player.field.createRandomizedFleet();
-    console.log(player)
+    bot.field.createRandomizedFleet();
+    if (confirm('y')) player.field.createRandomizedFleet()
+    console.log(bot, player)
 }
 
 gameLoop()

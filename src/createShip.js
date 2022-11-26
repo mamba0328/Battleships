@@ -2,10 +2,10 @@ const createShip = function (cells) {
     return {
         lenght: cells,
         hits: 0,
-        sink: 'false',
+        sink: false,
         isSunk() {
             if (this.hits == this.lenght) {
-                this.sink = 'true'
+                this.sink = true
             }
         },
         hit(){

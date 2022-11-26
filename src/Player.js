@@ -12,9 +12,13 @@ class Player {
 
     sendAttack(attackCoordinates = [1, 1]) {
         if (typeof (attackCoordinates) != 'object') return 'Coordinates';
-        
-        if (this.name == 'bot') { 
-            this.botsAttack()
+        if (this.name == 'bot') {
+            if (this.field.lastShotHit) return
+            
+            this.botsAttack();
+            while (this.opponentsField.lastShotHit) { 
+                this.botsAttack();
+            }
         } else { 
             let existingShot = this.shots.filter((shot) => { 
                 return shot[0] == attackCoordinates[0] && shot[1] == attackCoordinates[1]
@@ -23,14 +27,14 @@ class Player {
             if (existingShot.length > 0) return console.log('You shoot here already')
             
             this.opponentsField.recieveAttack(attackCoordinates);
-            this.shots.push(attackCoordinates)
+            this.shots.push(attackCoordinates);
+
         }
         
     }
 
     botsAttack() { 
         if (this.name != 'bot') return 'you don`t have permission to obtein bot`s power';
-        
         this.opponentsField.recieveAttack(this.findUnshootedSpot(), 'bot');
     }
 
@@ -97,8 +101,9 @@ class Player {
                 const separeter = coordsOfTheCell.indexOf(',');
                 const eTargetCoords = [parseFloat(coordsOfTheCell.slice(0, separeter)), parseFloat(coordsOfTheCell.slice(separeter + 1))];
 
-                this.field.placeShip(eTargetCoords, numberOfCellInShip, this.currentAxe)
-                e.target.classList.add('dragging');
+                if (this.field.placeShip(eTargetCoords, numberOfCellInShip, this.currentAxe) == true) { 
+                    e.target.classList.add('dragging');
+                }
             })
                 
             element.addEventListener('click', () => { 

@@ -35,26 +35,35 @@ function createField(bot = false) {
 
         isBot: bot, 
 
+        lastShotHit: false, 
         //methods 
         placeShip(position, cells, mainAxe) {
             
             if (typeof (position) != 'object') {
-                return 'typeof coordinates is invalid, use obj'
+                return false
             }
 
             const allCoordinates = coordinatesOfEachCell(position, cells, mainAxe);
 
-            if (this.isShipExistOn(allCoordinates)) {
-                return console.log('you can`t place ship here')
+            if (this.isPlaceReserved(allCoordinates)) {
+                return false
             } else if (mainAxe == 'x' && (position[0] + cells - 1> 10)) {
-                return console.log('you can`t place ship here')
+                return false
             } else if (mainAxe == 'y' && (position[1] + cells - 1> 10)) {
-                return console.log('you can`t place ship here')
+                return false
             }
 
             //mechanic of placing 
-            this.defineShipInItsGroup(allCoordinates, cells, mainAxe)
-            this.reseveArea(allCoordinates, mainAxe)
+            if (cells == 1) {
+                this.makeShip(this.ships.onecells, allCoordinates, cells, this.reseveArea(allCoordinates, mainAxe));
+            } else if (cells == 2) {
+                this.makeShip(this.ships.twocells, allCoordinates, cells, this.reseveArea(allCoordinates, mainAxe));
+            } else if (cells == 3) {
+                this.makeShip(this.ships.threecells, allCoordinates, cells, this.reseveArea(allCoordinates, mainAxe));
+            } else if (cells == 4) {
+                this.makeShip(this.ships.fourcells, allCoordinates, cells, this.reseveArea(allCoordinates, mainAxe));
+            }
+
             if (this.isBot) return
             
             allCoordinates.forEach(array => {
@@ -64,6 +73,7 @@ function createField(bot = false) {
             })
 
             this.startTheGame(this.areAllShipsPlaced())
+            return true
         },
 
         recieveAttack(attackAt, whoAttacked = 'player') {
@@ -73,18 +83,18 @@ function createField(bot = false) {
             //check either coordinates matches ships coordianates
             if (this.isShipExistOn(attackAt)) {
                 //if they do => hit ship at this coordinates
-                this.hitShipOn(attackAt)
-                //game ends?
-                if (this.areAllShipsSunk()) this.theGameEnds()
+                this.hitShipOn(attackAt, whoAttacked); //if function will provoke ships sinking it will return array of reserved area which will be addede to bot's shot to be concidered then 
                 //let player that hit make turn again
-                this.lastShotHit = 'true'
+                this.lastShotHit = true;
                 //show it at the field
-                attackedCell.classList.add('hitted')
+                attackedCell.classList.add('hitted');
+                //game ends?
+                if (this.areAllShipsSunk()) this.theGameEnds();
             } else {
                 //if they don't => keep coordinates of miss 
                 this.coordinates.ofMissedAttacks.push(attackAt)
                 //let player that miss pass turn 
-                this.lastShotHit = 'false'
+                this.lastShotHit = false
                 //show it at the field
                 attackedCell.classList.add('missed')
             }
@@ -96,7 +106,7 @@ function createField(bot = false) {
                     if (this.ships[xcells][byOrder] == null) continue
                 
                     const sinkingOfShip = this.ships[xcells][byOrder].sink;
-                    if (sinkingOfShip == 'false') {
+                    if (sinkingOfShip == false) {
                         return false
                     }
                 }
@@ -104,11 +114,12 @@ function createField(bot = false) {
             return true
         },
 
-        makeShip(areaToPlace, allCoordinates, cells) {
+        makeShip(areaToPlace, allCoordinates, cells, areaAround) {
             for (let ship in areaToPlace) {
                 if (areaToPlace[ship] == null) {
                     areaToPlace[ship] = createShip(cells);
                     areaToPlace[ship].coordinates = allCoordinates;
+                    areaToPlace[ship].areaAround = areaAround;
                     this.coordinates.ofShips.push(...allCoordinates);
                     break
                 }
@@ -118,18 +129,19 @@ function createField(bot = false) {
         isShipExistOn(arrayOfCoordinates) {
             if (this.coordinates.ofShips.length == 0) return false
 
-            if (typeof(arrayOfCoordinates[0]) == 'object') {
+            if (typeof (arrayOfCoordinates[0]) == 'object') {
+                
                 for (let i = 0; i < arrayOfCoordinates.length; i++){
                     const existingShip = this.coordinates.ofShips.filter((shipCoordinates) => { 
-                    return (shipCoordinates[0] == arrayOfCoordinates[i][0] && shipCoordinates[1] == arrayOfCoordinates[i][1])
-                })
+                      return (shipCoordinates[0] == arrayOfCoordinates[i][0] && shipCoordinates[1] == arrayOfCoordinates[i][1])
+                     })
 
-                if (existingShip.length > 0) { //that means that ship was filtered and exist
-                   return true
+                    if (existingShip.length > 0) { //that means that ship was filtered and exist
+                      return true
+                    }
                 }
-            }
-                
-            } else if (typeof(arrayOfCoordinates[0]) == 'number') { 
+
+            } else if (typeof (arrayOfCoordinates[0]) == 'number') { 
                 const existingShip = this.coordinates.ofShips.filter((shipCoordinates) => { 
                     return (shipCoordinates[0] == arrayOfCoordinates[0] && shipCoordinates[1] == arrayOfCoordinates[1])
                 })
@@ -141,34 +153,65 @@ function createField(bot = false) {
 
             return false
         },
+
+        isPlaceReserved(arrayOfCoordinates) {
+            if (this.coordinates.ofShips.length == 0) return false
+
+            if (typeof(arrayOfCoordinates[0]) == 'object') {
+                for (let i = 0; i < arrayOfCoordinates.length; i++){
+                    const existingShip = this.coordinates.ofReservedArea.filter((reservedCoordinates) => { 
+                    return (reservedCoordinates[0] == arrayOfCoordinates[i][0] && reservedCoordinates[1] == arrayOfCoordinates[i][1])
+                })
+
+                if (existingShip.length > 0) { //that means that ship was filtered and exist
+                   return true
+                }
+            }
+                
+            } else if (typeof(arrayOfCoordinates[0]) == 'number') { 
+                const existingShip = this.coordinates.ofReservedArea.filter((reservedCoordinates) => { 
+                    return (reservedCoordinates[0] == arrayOfCoordinates[0] && reservedCoordinates[1] == arrayOfCoordinates[1])
+                })
+
+                if (existingShip.length > 0) { //that means that ship was filtered and exist
+                   return true
+                }
+            }
+
+            return false
+        },
         
-        hitShipOn(position) {
-            for (let xcells in this.ships) {
-                for (let byOrder in this.ships[xcells]) {
-                    if (this.ships[xcells][byOrder] == null) continue
+        hitShipOn(position, whoAttacked) {
+            for (let category in this.ships) { 
+                for (let ship in this.ships[category]) { 
+
+                    const itteratedShipCoordinates = this.ships[category][ship].coordinates; 
+
+                    let matchingCoordsOfAttackAndShip = itteratedShipCoordinates.filter(coordsOfShip => { 
+                        if (position[0] == coordsOfShip[0] && position[1] == coordsOfShip[1]) {
+                            return true
+                        }   
+                    })
                     
-                    const coordinatesOfShip = this.ships[xcells][byOrder].coordinates;
-                    for (let i = 0; i < coordinatesOfShip.length; i++) {
-                        if (coordinatesOfShip[i][0] == position[0] && coordinatesOfShip[i][1] == position[1]) {
-                            this.ships[xcells][byOrder].hit()
-                        }
+                    if (matchingCoordsOfAttackAndShip.length > 0) this.ships[category][ship].hit();
+
+                    if (this.ships[category][ship].sink) {
+                        this.makeAreaAroundSinkedShipHitted(this.ships[category][ship].areaAround, whoAttacked);
                     }
                 }
             }
         },
-        
-        defineShipInItsGroup(coordinates, cells, mainAxe) {
-            if (cells == 1) {
-                this.makeShip(this.ships.onecells, coordinates, cells, mainAxe)
-            } else if (cells == 2) {
-                this.makeShip(this.ships.twocells, coordinates, cells, mainAxe)
-            } else if (cells == 3) {
-                this.makeShip(this.ships.threecells, coordinates, cells, mainAxe)
-            } else if (cells == 4) {
-                this.makeShip(this.ships.fourcells, coordinates, cells, mainAxe)
-            }
-        },
 
+        makeAreaAroundSinkedShipHitted(array, whoAttacked) {
+            array.forEach(coords => {
+                const cellsWithCoordinatesOfAttack = document.getElementsByClassName(`${coords[0]},${coords[1]}`)
+                let areaCell = cellsWithCoordinatesOfAttack[0];
+                whoAttacked == 'bot' ? areaCell = cellsWithCoordinatesOfAttack[0] : areaCell = cellsWithCoordinatesOfAttack[1];
+                areaCell.classList.add('missed')
+            })
+            
+        },
+        
         placeShipAtRandomPosition(lengthOfShip) {
             let coordianates = [];
             let increaser = 0;
@@ -306,9 +349,8 @@ function createField(bot = false) {
                         reserve.push([coordianates[i][0] + 1, coordianates[i][1] + 1])
                         reserve.push([coordianates[i][0] + 1, coordianates[i][1] - 1])
                     }
-
-                    reserve.push([coordianates[i][0], coordianates[i][1] + 1])
-                    reserve.push([coordianates[i][0], coordianates[i][1] - 1])
+                   reserve.push([coordianates[i][0], coordianates[i][1] + 1])
+                   reserve.push([coordianates[i][0], coordianates[i][1] - 1])
                 }
             } else { 
                 for (let i = 0; i < coordianates.length; i++) {
@@ -316,18 +358,23 @@ function createField(bot = false) {
                         reserve.push([coordianates[i][0], coordianates[i][1] - 1] )
                         reserve.push([coordianates[i][0] + 1, coordianates[i][1] - 1])
                         reserve.push([coordianates[i][0] - 1, coordianates[i][1] - 1])
-                    }
-                    if (i == coordianates.length - 1) {
+                    }if (i == coordianates.length - 1) {
                         reserve.push([coordianates[i][0], coordianates[i][1] + 1 ])
                         reserve.push([coordianates[i][0] + 1, coordianates[i][1] + 1])
                         reserve.push([coordianates[i][0] - 1, coordianates[i][1] + 1])
                     }
-                        reserve.push([coordianates[i][0] + 1, coordianates[i][1]])
-                        reserve.push([coordianates[i][0] - 1, coordianates[i][1]])
+                    reserve.push([coordianates[i][0] + 1, coordianates[i][1]])
+                    reserve.push([coordianates[i][0] - 1, coordianates[i][1]])
                 }
             }
+
+            let areaAroundShip = reserve.filter(result => {
+                if(!(result[0] < 1) && !(result[0] > 10) && !(result[1] < 1) && !(result[1] > 10) ) return true
+            })
+
             reserve.push(...coordianates);
             this.coordinates.ofReservedArea.push(...reserve)
+            return areaAroundShip
         }
     }
 }
