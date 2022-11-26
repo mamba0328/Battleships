@@ -49,16 +49,15 @@ class Player {
             } else if (y == 0) { 
                 continue mainLoop
             } 
-                    
-            let searchedCoordinates = this.shots.filter((arr) => {
-                return arr[0] == x && arr[1] == y
+
+            let searchedCoordinates = this.opponentsField.coordinates.ofAttacks.filter((arr) => {
+               return arr[0] == x && arr[1] == y
             })
 
             //if searchedCoordinates already exist it means that shot on such location was alredy done
-            if(searchedCoordinates.length > 0) continue mainLoop
+            if (searchedCoordinates.length > 0) continue mainLoop
             
-
-            this.shots.push([x, y]);
+            console.log(x,y)
             return [x, y]
         }
     }

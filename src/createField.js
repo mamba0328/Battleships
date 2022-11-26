@@ -29,8 +29,8 @@ function createField(bot = false) {
 
         coordinates: {
             ofShips: [],
-            ofMissedAttacks: [],
             ofReservedArea: [],
+            ofAttacks: [],
         },
 
         isBot: bot, 
@@ -88,11 +88,12 @@ function createField(bot = false) {
                 this.lastShotHit = true;
                 //show it at the field
                 attackedCell.classList.add('hitted');
+                this.coordinates.ofAttacks.push(attackAt);
                 //game ends?
                 if (this.areAllShipsSunk()) this.theGameEnds();
             } else {
                 //if they don't => keep coordinates of miss 
-                this.coordinates.ofMissedAttacks.push(attackAt)
+                this.coordinates.ofAttacks.push(attackAt)
                 //let player that miss pass turn 
                 this.lastShotHit = false
                 //show it at the field
@@ -197,6 +198,7 @@ function createField(bot = false) {
 
                     if (this.ships[category][ship].sink) {
                         this.makeAreaAroundSinkedShipHitted(this.ships[category][ship].areaAround, whoAttacked);
+                        this.coordinates.ofAttacks.push(...this.ships[category][ship].areaAround);
                     }
                 }
             }
