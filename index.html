@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./dist/main.js" defer></script>
+    <link rel="stylesheet" href="../src/style.css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="gamearea">
+            <div id="shipAreas">
+                <div id="shipArea">
+
+                    <div id="theShipModule"><div id="fourcell" class="draggableShip" class='animated' draggable="true"></div> <p>x<span id="fourcellCounter">1</span></p> </div>
+                    
+                    <div id="theShipModule"><div id="threecell" class="draggableShip" class='animated' draggable="true"></div> <p>x<span id="threecellCounter">2</span></p> </div>
+                    
+                    <div id="theShipModule"><div id="twocell" class="draggableShip" class='animated' draggable="true"></div> <p>x<span id="twocellCounter">3</span></p> </div>
+                    
+                    <div id="theShipModule"><div id="onecell" class="draggableShip" class='animated' draggable="true"></div> <p>x<span id="onecellCounter">4</span></p> </div>
+                    
+                </div>
+                <div id="oponentsShipArea">
+                    <div id="fourcell" class="notDraggableShip"></div>
+                    <div id="threecell" class="notDraggableShip"></div>
+                    <div id="twocell" class="notDraggableShip"></div>
+                    <div id="onecell" class="notDraggableShip"></div>
+                </div>
+            </div>
+            <div id="battlefields">
+            <div class="battlefield", id="my"></div>
+            <div class="battlefield", id="oponents" data="unclickable"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap'); 
 
 * { 
     box-sizing: border-box;
@@ -17,30 +17,69 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background: linear-gradient(0.25turn, #004a69, #3cbbf6);;
+    background: linear-gradient(0.25turn, #004a69, #3cbbf6);
+}
+
+#theShipModule{ 
+    display: flex;
+    align-items: center;
+    font-family: 'Patrick Hand', cursive;
+    font-weight: 700;
+    font-size: large;
+}
+
+#theShipModuleY {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Patrick Hand', cursive;
+    font-weight: 700;
+    font-size: large;
+}
+
+
+#shipAreas{
+    height: 100%;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(255, 255, 255) ;
+    border-bottom-left-radius: 3em;
+    border-top-left-radius: 3em;
+    border-right: 5px solid rgb(0, 0, 0);
 }
 
 #shipArea { 
-    max-width: 20%;
     padding: 0.5em;
+    height: 13em;
+    width: 14em;
     display: flex;
     flex-direction: column;
-    background-color: rgba(240, 248, 255, 0.11);
     border-radius: 1em;
     margin: 1em;
 }
 
 #shipAreaY {
-    max-height: 20%;
+    height: 13em;
+    width: 14em;
     padding: 0.5em;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    background-color: rgba(240, 248, 255, 0.11);
     border-radius: 1em;
-    margin: 1em;
 }
 
+#oponentsShipArea{ 
+    padding: 0.5em;
+    height: 13em;
+    width: 14em;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1em;
+    margin: 1em;    
+}
 
 .draggableShip{ 
     min-width: 10px;
@@ -52,6 +91,14 @@ html, body {
     -webkit-animation: blink 1s infinite;
     -moz-animation: blink 1s infinite;
     -ms-animation: blink 1s infinite;
+}
+
+.notDraggableShip {
+    min-width: 10px;
+    min-height: 10px;
+    background-color: rgb(196, 96, 99);
+    margin: 0.5em;
+    border: 2px solid rgb(51, 51, 51);
 }
 
 .draggableShip:hover { 
@@ -78,6 +125,7 @@ html, body {
     width: 2rem;
 }
 
+
 #twocellY {
     height: 4rem;
     width: 2rem;
@@ -93,6 +141,7 @@ html, body {
     width: 2rem;
 }
 
+
 .dragging { 
     opacity: 0.5;
     cursor:not-allowed;
@@ -101,12 +150,24 @@ html, body {
 #gamearea {
     height: 80%;
     width: 80%;
-    background-color: rgba(255, 255, 255, 0.247);
+    background-color: rgba(255, 255, 255, 0.103);
     display: flex;
     border-radius: 3em;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     margin: 0 1em;
+}
+
+#battlefields{ 
+    height: 100%;
+    width: 80%;
+    background-color: rgba(255, 255, 255, 0.103);
+    display: flex;
+    flex-direction: column;
+    border-bottom-right-radius: 3em;
+    border-top-right-radius: 3em;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .battlefield{
@@ -119,9 +180,31 @@ html, body {
     flex-wrap: wrap;
 }
 
+.battlefield:first-child::after{
+    content: "YOUR FIELD";
+    font-size: 40px;
+    font-family: 'Patrick Hand', cursive;
+    position: relative;
+    color: aliceblue;
+    right: 5em;
+    bottom: 4.5em;
+}
+
+.battlefield:last-child::after {
+    content: "OPPONENTS FIELD";
+    font-size: 40px;
+    font-family: 'Patrick Hand', cursive;
+    position: relative;
+    color: aliceblue;
+    left: 8.8em;
+    bottom: 4.5em;
+}
+
 #my{ 
     background-color: rgb(255, 255, 255);
 }
+
+
 
 [data = 'unclickable'] {
     pointer-events: none

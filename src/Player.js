@@ -101,7 +101,7 @@ class Player {
                 const eTargetCoords = [parseFloat(coordsOfTheCell.slice(0, separeter)), parseFloat(coordsOfTheCell.slice(separeter + 1))];
 
                 if (this.field.placeShip(eTargetCoords, numberOfCellInShip, this.currentAxe) == true) { 
-                    e.target.classList.add('dragging');
+                    this.countLeftShipsToPlace(numberOfCellInShip, e)
                 }
             })
                 
@@ -111,11 +111,23 @@ class Player {
         })
     }
 
+    countLeftShipsToPlace(cells, e) { 
+        let targetId = 'onecellCounter'; 
+        cells == 4 ? targetId = 'fourcellCounter' : cells == 3 ? targetId = 'threecellCounter' : cells == 2 ? targetId = 'twocellCounter' : targetId = 'onecellCounter';
+        const counter = document.getElementById(targetId);
+        let countNum = counter.innerText - 1;
+        if (countNum < 1) {
+            e.target.classList.add('dragging');
+            e.target.removeAttribute('draggable')
+        }
+        counter.innerText = countNum;
+    }
+
     changeAxeOfShips() {
         if(this.currentAxe == 'x'){ 
             const shipArea = document.getElementById('shipArea');
             this.changeId(shipArea, 'shipArea', 'shipAreaY');
-            const allShips = shipArea.children
+            const allShips = document.getElementsByClassName('draggableShip')
             Array.from(allShips).forEach(ship => { 
             const oldId = ship.id; 
             if (oldId == 'onecell') return; 
@@ -126,7 +138,7 @@ class Player {
         } else {
             const shipArea = document.getElementById('shipAreaY');
             this.changeId(shipArea, 'shipAreaY', 'shipArea');
-            const allShips = shipArea.children
+            const allShips = document.getElementsByClassName('draggableShip')
             Array.from(allShips).forEach(ship => { 
             const oldId = ship.id; 
             if (oldId == 'onecell') return; 
