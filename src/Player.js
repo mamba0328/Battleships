@@ -105,7 +105,8 @@ class Player {
                 }
             })
                 
-            element.addEventListener('click', () => { 
+            element.addEventListener('click', (e) => {
+                if(e.target.classList == 'draggableShipNotAnimated') return  
                 this.changeAxeOfShips()
             })
         })

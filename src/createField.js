@@ -194,7 +194,7 @@ function createField(bot = false) {
                         }   
                     })
                     
-                    if (matchingCoordsOfAttackAndShip.length > 0) this.ships[category][ship].hit();
+                    if (matchingCoordsOfAttackAndShip.length > 0) this.ships[category][ship].hit(whoAttacked);
 
                     if (this.ships[category][ship].sink) {
                         this.makeAreaAroundSinkedShipHitted(this.ships[category][ship].areaAround, whoAttacked);
@@ -318,9 +318,15 @@ function createField(bot = false) {
 
         startTheGame(boolean) {
             if (boolean == false) return; 
-            const draggableShips = document.getElementById('shipArea') || document.getElementById('shipAreaY') ;
-            draggableShips.style.display = 'none'; 
-
+            const shipsCounters = [document.getElementById('fourcellCounter'), document.getElementById('threecellCounter'), document.getElementById('twocellCounter'),document.getElementById('onecellCounter')]
+            shipsCounters.forEach(counter => {
+                counter.innerText = '0';
+                counter.parentElement.parentElement.classList.add('dragging');
+                counter.parentElement.parentElement.firstChild.removeAttribute('draggable');
+                counter.parentElement.parentElement.firstChild.classList.remove('draggableShip');
+                counter.parentElement.parentElement.firstChild.classList.add('draggableShipNotAnimated');
+            })
+            
             const opponentsField = document.getElementById('oponents');
             opponentsField.removeAttribute('data', 'unclickable');
 

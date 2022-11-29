@@ -1,294 +1,294 @@
-@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap'); 
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
 
-* { 
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html, body { 
-    width: 100%;
-    height: 100%;
+html,
+body {
+  width: 100%;
+  height: 100%;
 }
 
-#wrapper { 
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    background: linear-gradient(0.25turn, #004a69, #3cbbf6);
+#wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: linear-gradient(0.25turn, #004a69, #3cbbf6);
 }
 
-#theShipModule{ 
-    display: flex;
-    align-items: center;
-    font-family: 'Patrick Hand', cursive;
-    font-weight: 700;
-    font-size: large;
+#theShipModule {
+  display: flex;
+  align-items: center;
+  font-family: 'Patrick Hand', cursive;
+  font-weight: 700;
+  font-size: large;
 }
 
 #theShipModuleY {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    font-family: 'Patrick Hand', cursive;
-    font-weight: 700;
-    font-size: large;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Patrick Hand', cursive;
+  font-weight: 700;
+  font-size: large;
 }
 
-
-#shipAreas{
-    height: 100%;
-    width: 20%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    background-color: rgb(255, 255, 255) ;
-    border-bottom-left-radius: 3em;
-    border-top-left-radius: 3em;
-    border-right: 5px solid rgb(0, 0, 0);
+#shipAreas {
+  height: 100%;
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  border-bottom-left-radius: 3em;
+  border-top-left-radius: 3em;
+  border-right: 5px solid rgb(0, 0, 0);
 }
 
-#shipArea { 
-    padding: 0.5em;
-    height: 13em;
-    width: 14em;
-    display: flex;
-    flex-direction: column;
-    border-radius: 1em;
-    margin: 1em;
+#shipArea {
+  padding: 0.5em;
+  height: 13em;
+  width: 14em;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1em;
+  margin: 1em;
 }
 
 #shipAreaY {
-    height: 13em;
-    width: 14em;
-    padding: 0.5em;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    border-radius: 1em;
+  height: 13em;
+  width: 14em;
+  padding: 0.5em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-radius: 1em;
 }
 
-#oponentsShipArea{ 
-    padding: 0.5em;
-    height: 13em;
-    width: 14em;
-    display: flex;
-    flex-direction: column;
-    border-radius: 1em;
-    margin: 1em;    
+#oponentsShipArea {
+  padding: 0.5em;
+  height: 13em;
+  width: 14em;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1em;
+  margin: 1em;
 }
 
-.draggableShip{ 
-    min-width: 10px;
-    min-height: 10px;
-    background-color: rgb(181, 202, 172);
-    margin: 0.5em;
-    cursor: grab;
-    border: 2px solid grey;
-    -webkit-animation: blink 1s infinite;
-    -moz-animation: blink 1s infinite;
-    -ms-animation: blink 1s infinite;
+.draggableShip {
+  min-width: 10px;
+  min-height: 10px;
+  background-color: rgb(181, 202, 172);
+  margin: 0.5em;
+  cursor: grab;
+  border: 2px solid grey;
+  -webkit-animation: blink 1s infinite;
+  -moz-animation: blink 1s infinite;
+  -ms-animation: blink 1s infinite;
+}
+
+.draggableShipNotAnimated {
+  min-width: 10px;
+  min-height: 10px;
+  background-color: rgb(181, 202, 172);
+  margin: 0.5em;
+  cursor: auto;
+  border: 2px solid grey;
 }
 
 .notDraggableShip {
-    min-width: 10px;
-    min-height: 10px;
-    background-color: rgb(196, 96, 99);
-    margin: 0.5em;
-    border: 2px solid rgb(51, 51, 51);
+  min-width: 10px;
+  min-height: 10px;
+  background-color: rgb(196, 96, 99);
+  margin: 0.5em;
+  border: 2px solid rgb(51, 51, 51);
 }
 
-.draggableShip:hover { 
-    border: 2px solid #3cbbf6;
+.draggableShip:hover {
+  border: 2px solid #3cbbf6;
 }
 
-#fourcell{ 
-    height: 2rem;
-    width: 8rem;
+#fourcell {
+  height: 2rem;
+  width: 8rem;
 }
 
-#fourcellY{
-    height: 8rem;
-    width: 2rem;
+#fourcellY {
+  height: 8rem;
+  width: 2rem;
 }
 
 #threecell {
-    height: 2rem;
-    width: 6rem;
+  height: 2rem;
+  width: 6rem;
 }
 
 #threecellY {
-    height: 6rem;
-    width: 2rem;
+  height: 6rem;
+  width: 2rem;
 }
 
-
 #twocellY {
-    height: 4rem;
-    width: 2rem;
+  height: 4rem;
+  width: 2rem;
 }
 
 #twocell {
-    height: 2rem;
-    width: 4rem;
+  height: 2rem;
+  width: 4rem;
 }
 
 #onecell {
-    height: 2rem;
-    width: 2rem;
+  height: 2rem;
+  width: 2rem;
 }
 
-
-.dragging { 
-    opacity: 0.5;
-    cursor:not-allowed;
+.dragging {
+  opacity: 0.5;
 }
 
 #gamearea {
-    height: 80%;
-    width: 80%;
-    background-color: rgba(255, 255, 255, 0.103);
-    display: flex;
-    border-radius: 3em;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 1em;
+  height: 80%;
+  width: 80%;
+  background-color: rgba(255, 255, 255, 0.103);
+  display: flex;
+  border-radius: 3em;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 1em;
 }
 
-#battlefields{ 
-    height: 100%;
-    width: 80%;
-    background-color: rgba(255, 255, 255, 0.103);
-    display: flex;
-    flex-direction: column;
-    border-bottom-right-radius: 3em;
-    border-top-right-radius: 3em;
-    justify-content: space-around;
-    align-items: center;
+#battlefields {
+  height: 100%;
+  width: 80%;
+  background-color: rgba(255, 255, 255, 0.103);
+  display: flex;
+  flex-direction: column;
+  border-bottom-right-radius: 3em;
+  border-top-right-radius: 3em;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.battlefield{
-    width: clamp(100px, 20rem, 40%);
-    height: clamp(100px, 20rem, 100%);
-    min-height: 100px;
-    min-width: 100px;
-    background-color: rgb(255, 255, 255);
-    display: flex;
-    flex-wrap: wrap;
+.battlefield {
+  width: clamp(100px, 20rem, 40%);
+  height: clamp(100px, 20rem, 100%);
+  min-height: 100px;
+  min-width: 100px;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.battlefield:first-child::after{
-    content: "YOUR FIELD";
-    font-size: 40px;
-    font-family: 'Patrick Hand', cursive;
-    position: relative;
-    color: aliceblue;
-    right: 5em;
-    bottom: 4.5em;
+.battlefield:first-child::after {
+  content: 'YOUR FIELD';
+  font-size: 40px;
+  font-family: 'Patrick Hand', cursive;
+  position: relative;
+  color: aliceblue;
+  right: 5em;
+  bottom: 4.5em;
 }
 
 .battlefield:last-child::after {
-    content: "OPPONENTS FIELD";
-    font-size: 40px;
-    font-family: 'Patrick Hand', cursive;
-    position: relative;
-    color: aliceblue;
-    left: 8.8em;
-    bottom: 4.5em;
+  content: 'OPPONENTS FIELD';
+  font-size: 40px;
+  font-family: 'Patrick Hand', cursive;
+  position: relative;
+  color: aliceblue;
+  left: 8.8em;
+  bottom: 4.5em;
 }
 
-#my{ 
-    background-color: rgb(255, 255, 255);
+#my {
+  background-color: rgb(255, 255, 255);
 }
 
-
-
-[data = 'unclickable'] {
-    pointer-events: none
+[data='unclickable'] {
+  pointer-events: none;
 }
 
-
-.cell{
-    width: 10%;
-    height: 10%;
-    border: 1px dashed rgb(0, 110, 255);
-    background-color: transparent;
-    cursor: crosshair;
+.cell {
+  width: 10%;
+  height: 10%;
+  border: 1px dashed rgb(0, 110, 255);
+  background-color: transparent;
+  cursor: crosshair;
 }
 
-[data = animated] {
-    border: 1px solid;
-    -webkit-animation: blink 1s infinite;
-    -moz-animation: blink 1s infinite;
-    -ms-animation: blink 1s infinite;
+[data='animated'] {
+  border: 1px solid;
+  -webkit-animation: blink 1s infinite;
+  -moz-animation: blink 1s infinite;
+  -ms-animation: blink 1s infinite;
 }
-
 
 .cell#ship {
-   background-color: rgb(181, 202, 172);
-   cursor: pointer;
+  background-color: rgb(181, 202, 172);
+  cursor: pointer;
 }
 
 .cell.hitted#ship {
-    background-color: rgb(255, 0, 0);
-    cursor: pointer;
+  background-color: rgb(255, 0, 0);
+  cursor: pointer;
 }
 
-
-.cell:hover{ 
-    background-color: rgb(174, 208, 252);
+.cell:hover {
+  background-color: rgb(174, 208, 252);
 }
 
-.cell.hitted{ 
-    background-color: red;
+.cell.hitted {
+  background-color: red;
 }
 
 .cell.missed {
-    background-color: rgb(92, 162, 255);
+  background-color: rgb(92, 162, 255);
 }
 
 @-webkit-keyframes blink {
-    0% {
-        border-color: red;
-    }
+  0% {
+    border-color: red;
+  }
 
-    50% {
-        border-color: green;
-    }
+  50% {
+    border-color: green;
+  }
 
-    100% {
-        border-color: red;
-    }
+  100% {
+    border-color: red;
+  }
 }
 
 @-moz-keyframes blink {
-    0% {
-        border-color: red;
-    }
+  0% {
+    border-color: red;
+  }
 
-    50% {
-        border-color: green;
-    }
+  50% {
+    border-color: green;
+  }
 
-    100% {
-        border-color: red;
-    }
+  100% {
+    border-color: red;
+  }
 }
 
 @-ms-keyframes blink {
-    0% {
-        border-color: red;
-    }
+  0% {
+    border-color: red;
+  }
 
-    50% {
-        border-color: green;
-    }
+  50% {
+    border-color: green;
+  }
 
-    100% {
-        border-color: red;
-    }
+  100% {
+    border-color: red;
+  }
 }
-
