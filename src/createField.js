@@ -215,6 +215,7 @@ function createField(bot = false) {
         },
         
         placeShipAtRandomPosition(lengthOfShip) {
+            //TODO : check either all of the ships aren't created
             let coordianates = [];
             let increaser = 0;
             let axes = ['x', 'y'];
@@ -317,8 +318,8 @@ function createField(bot = false) {
         },
 
         startTheGame(boolean) {
-            if (boolean == false) return; 
-            const shipsCounters = [document.getElementById('fourcellCounter'), document.getElementById('threecellCounter'), document.getElementById('twocellCounter'),document.getElementById('onecellCounter')]
+            if (boolean == false) return;
+            const shipsCounters = [document.getElementById('fourcellCounter'), document.getElementById('threecellCounter'), document.getElementById('twocellCounter'), document.getElementById('onecellCounter')]
             shipsCounters.forEach(counter => {
                 counter.innerText = '0';
                 counter.parentElement.parentElement.classList.add('dragging');
@@ -334,7 +335,11 @@ function createField(bot = false) {
             Array.from(cells).forEach(element => {
                 element.removeAttribute('data')
             });
+
+            const randomizeShipButton = document.querySelector('button')
+            randomizeShipButton.style.display = 'none';
         },
+            
 
         areAllShipsPlaced() { 
          return this.coordinates.ofShips.length == 20 ?  true : false ; 

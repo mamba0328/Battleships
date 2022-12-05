@@ -184,6 +184,7 @@ body {
   background-color: rgb(255, 255, 255);
   display: flex;
   flex-wrap: wrap;
+  margin: 1em;
 }
 
 .battlefield:first-child::after {
@@ -215,6 +216,8 @@ body {
 }
 
 .cell {
+  min-width: 15px;
+  min-height: 15px;
   width: 10%;
   height: 10%;
   border: 1px dashed rgb(0, 110, 255);

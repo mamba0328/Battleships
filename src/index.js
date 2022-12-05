@@ -1,5 +1,5 @@
 import { doc } from 'prettier';
-import Player from './Player'
+import Player from './Player.js'
 
 const gameLoop = function () { 
     const player = new Player('val9');
@@ -9,7 +9,10 @@ const gameLoop = function () {
     player.createBattlefields();
     bot.createBattlefields();
     bot.field.createRandomizedFleet();
-    if (confirm('y')) player.field.createRandomizedFleet()
+    const randomizeShipButton = document.querySelector('button')
+    randomizeShipButton.addEventListener('click', () => {
+        player.field.createRandomizedFleet();
+    })
 }
 
 gameLoop()
