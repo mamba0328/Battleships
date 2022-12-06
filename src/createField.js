@@ -66,12 +66,6 @@ function createField(bot = false) {
 
             if (this.isBot) return
             
-            allCoordinates.forEach(array => {
-                const cells = document.getElementsByClassName(`${array[0]},${array[1]}`);
-                const cell = cells[0] //left field
-                cell.setAttribute('id', 'ship')
-            })
-
             this.startTheGame(this.areAllShipsPlaced())
             return true
         },
@@ -122,6 +116,15 @@ function createField(bot = false) {
                     areaToPlace[ship].coordinates = allCoordinates;
                     areaToPlace[ship].areaAround = areaAround;
                     this.coordinates.ofShips.push(...allCoordinates);
+
+                    if (!this.isBot) {
+                        allCoordinates.forEach(array => {
+                            const cells = document.getElementsByClassName(`${array[0]},${array[1]}`);
+                            const cell = cells[0] //left field
+                            cell.setAttribute('id', 'ship')
+                        })   
+                    }
+    
                     break
                 }
             }
@@ -215,7 +218,6 @@ function createField(bot = false) {
         },
         
         placeShipAtRandomPosition(lengthOfShip) {
-            //TODO : check either all of the ships aren't created
             let coordianates = [];
             let increaser = 0;
             let axes = ['x', 'y'];
@@ -312,10 +314,6 @@ function createField(bot = false) {
                 })
             }
         }, 
-
-       areAllShipsPlaced(field) { 
-            return field.coordinates.ofShips.length == 20 ?  true : false ; 
-        },
 
         startTheGame(boolean) {
             if (boolean == false) return;
