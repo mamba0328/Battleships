@@ -1,7 +1,7 @@
 import { check, doc } from "prettier"
 import createShip from "./createShip"
 
-function createField(bot = false) { 
+function createField(bot = false) {
     return {
         ships: {
             onecells: {
@@ -10,7 +10,7 @@ function createField(bot = false) {
                 third: null,
                 fourth: null
             },
-            
+
             twocells: {
                 first: null,
                 second: null,
@@ -33,12 +33,12 @@ function createField(bot = false) {
             ofAttacks: [],
         },
 
-        isBot: bot, 
+        isBot: bot,
 
-        lastShotHit: false, 
+        lastShotHit: false,
         //methods 
         placeShip(position, cells, mainAxe) {
-            
+
             if (typeof (position) != 'object') {
                 return false
             }
@@ -47,9 +47,9 @@ function createField(bot = false) {
 
             if (this.isPlaceReserved(allCoordinates)) {
                 return false
-            } else if (mainAxe == 'x' && (position[0] + cells - 1> 10)) {
+            } else if (mainAxe == 'x' && (position[0] + cells - 1 > 10)) {
                 return false
-            } else if (mainAxe == 'y' && (position[1] + cells - 1> 10)) {
+            } else if (mainAxe == 'y' && (position[1] + cells - 1 > 10)) {
                 return false
             }
 
@@ -65,7 +65,7 @@ function createField(bot = false) {
             }
 
             if (this.isBot) return
-            
+
             this.startTheGame(this.areAllShipsPlaced())
             return true
         },
@@ -99,7 +99,7 @@ function createField(bot = false) {
             for (let xcells in this.ships) {
                 for (let byOrder in this.ships[xcells]) {
                     if (this.ships[xcells][byOrder] == null) continue
-                
+
                     const sinkingOfShip = this.ships[xcells][byOrder].sink;
                     if (sinkingOfShip == false) {
                         return false
@@ -122,36 +122,36 @@ function createField(bot = false) {
                             const cells = document.getElementsByClassName(`${array[0]},${array[1]}`);
                             const cell = cells[0] //left field
                             cell.setAttribute('id', 'ship')
-                        })   
+                        })
                     }
-    
+
                     break
                 }
             }
         },
-        
+
         isShipExistOn(arrayOfCoordinates) {
             if (this.coordinates.ofShips.length == 0) return false
 
             if (typeof (arrayOfCoordinates[0]) == 'object') {
-                
-                for (let i = 0; i < arrayOfCoordinates.length; i++){
-                    const existingShip = this.coordinates.ofShips.filter((shipCoordinates) => { 
-                      return (shipCoordinates[0] == arrayOfCoordinates[i][0] && shipCoordinates[1] == arrayOfCoordinates[i][1])
-                     })
+
+                for (let i = 0; i < arrayOfCoordinates.length; i++) {
+                    const existingShip = this.coordinates.ofShips.filter((shipCoordinates) => {
+                        return (shipCoordinates[0] == arrayOfCoordinates[i][0] && shipCoordinates[1] == arrayOfCoordinates[i][1])
+                    })
 
                     if (existingShip.length > 0) { //that means that ship was filtered and exist
-                      return true
+                        return true
                     }
                 }
 
-            } else if (typeof (arrayOfCoordinates[0]) == 'number') { 
-                const existingShip = this.coordinates.ofShips.filter((shipCoordinates) => { 
+            } else if (typeof (arrayOfCoordinates[0]) == 'number') {
+                const existingShip = this.coordinates.ofShips.filter((shipCoordinates) => {
                     return (shipCoordinates[0] == arrayOfCoordinates[0] && shipCoordinates[1] == arrayOfCoordinates[1])
                 })
 
                 if (existingShip.length > 0) { //that means that ship was filtered and exist
-                   return true
+                    return true
                 }
             }
 
@@ -161,42 +161,42 @@ function createField(bot = false) {
         isPlaceReserved(arrayOfCoordinates) {
             if (this.coordinates.ofShips.length == 0) return false
 
-            if (typeof(arrayOfCoordinates[0]) == 'object') {
-                for (let i = 0; i < arrayOfCoordinates.length; i++){
-                    const existingShip = this.coordinates.ofReservedArea.filter((reservedCoordinates) => { 
-                    return (reservedCoordinates[0] == arrayOfCoordinates[i][0] && reservedCoordinates[1] == arrayOfCoordinates[i][1])
-                })
+            if (typeof (arrayOfCoordinates[0]) == 'object') {
+                for (let i = 0; i < arrayOfCoordinates.length; i++) {
+                    const existingShip = this.coordinates.ofReservedArea.filter((reservedCoordinates) => {
+                        return (reservedCoordinates[0] == arrayOfCoordinates[i][0] && reservedCoordinates[1] == arrayOfCoordinates[i][1])
+                    })
 
-                if (existingShip.length > 0) { //that means that ship was filtered and exist
-                   return true
+                    if (existingShip.length > 0) { //that means that ship was filtered and exist
+                        return true
+                    }
                 }
-            }
-                
-            } else if (typeof(arrayOfCoordinates[0]) == 'number') { 
-                const existingShip = this.coordinates.ofReservedArea.filter((reservedCoordinates) => { 
+
+            } else if (typeof (arrayOfCoordinates[0]) == 'number') {
+                const existingShip = this.coordinates.ofReservedArea.filter((reservedCoordinates) => {
                     return (reservedCoordinates[0] == arrayOfCoordinates[0] && reservedCoordinates[1] == arrayOfCoordinates[1])
                 })
 
                 if (existingShip.length > 0) { //that means that ship was filtered and exist
-                   return true
+                    return true
                 }
             }
 
             return false
         },
-        
+
         hitShipOn(position, whoAttacked) {
-            for (let category in this.ships) { 
-                for (let ship in this.ships[category]) { 
+            for (let category in this.ships) {
+                for (let ship in this.ships[category]) {
 
-                    const itteratedShipCoordinates = this.ships[category][ship].coordinates; 
+                    const itteratedShipCoordinates = this.ships[category][ship].coordinates;
 
-                    let matchingCoordsOfAttackAndShip = itteratedShipCoordinates.filter(coordsOfShip => { 
+                    let matchingCoordsOfAttackAndShip = itteratedShipCoordinates.filter(coordsOfShip => {
                         if (position[0] == coordsOfShip[0] && position[1] == coordsOfShip[1]) {
                             return true
-                        }   
+                        }
                     })
-                    
+
                     if (matchingCoordsOfAttackAndShip.length > 0) this.ships[category][ship].hit(whoAttacked);
 
                     if (this.ships[category][ship].sink) {
@@ -214,9 +214,9 @@ function createField(bot = false) {
                 whoAttacked == 'bot' ? areaCell = cellsWithCoordinatesOfAttack[0] : areaCell = cellsWithCoordinatesOfAttack[1];
                 areaCell.classList.add('missed')
             })
-            
+
         },
-        
+
         placeShipAtRandomPosition(lengthOfShip) {
             let coordianates = [];
             let increaser = 0;
@@ -224,31 +224,31 @@ function createField(bot = false) {
             let mainAxe = 0;
 
             mainLoop:
-            while (coordianates.length < lengthOfShip) { 
+            while (coordianates.length < lengthOfShip) {
                 let chosenAxe = axes[Math.round(Math.random())];
 
-                if (chosenAxe == 'x') { 
+                if (chosenAxe == 'x') {
                     const x = Math.round(Math.random() * 10)
                     const y = Math.round(Math.random() * 10)
-                    if (x == 0) { 
+                    if (x == 0) {
                         continue mainLoop
-                    }else if (y == 0) { 
+                    } else if (y == 0) {
                         continue mainLoop
-                    } 
-                    
+                    }
 
-                    for (let i = 0; i < lengthOfShip; i++){ 
-                        let shipOn = this.coordinates.ofReservedArea.filter((ship) => { 
+
+                    for (let i = 0; i < lengthOfShip; i++) {
+                        let shipOn = this.coordinates.ofReservedArea.filter((ship) => {
                             return ship[0] == (x + increaser) && ship[1] == y
                         })
 
                         if (shipOn.length > 0) {//means that ship already exist
-                            coordianates = []; 
-                            increaser = 0; 
+                            coordianates = [];
+                            increaser = 0;
                             continue mainLoop
                         } else if (x + increaser > 10) {
-                            coordianates = []; 
-                            increaser = 0; 
+                            coordianates = [];
+                            increaser = 0;
                             continue mainLoop
                         }
 
@@ -256,27 +256,27 @@ function createField(bot = false) {
                         mainAxe = chosenAxe;
                         increaser++
                     }
-                } else { 
+                } else {
                     const x = Math.round(Math.random() * 10)
                     const y = Math.round(Math.random() * 10)
-                     if (x == 0) { 
+                    if (x == 0) {
                         continue mainLoop
-                    }else if (y == 0) { 
+                    } else if (y == 0) {
                         continue mainLoop
-                    } 
-                    
-                    for (let i = 0; i < lengthOfShip; i++){
-                        let shipOn = this.coordinates.ofReservedArea.filter((ship) => { 
-                            return ship[0] == x  && ship[1] == (y + increaser)
+                    }
+
+                    for (let i = 0; i < lengthOfShip; i++) {
+                        let shipOn = this.coordinates.ofReservedArea.filter((ship) => {
+                            return ship[0] == x && ship[1] == (y + increaser)
                         })
 
                         if (shipOn.length > 0) { //means that ship already exist
-                            coordianates = []; 
-                            increaser = 0; 
+                            coordianates = [];
+                            increaser = 0;
                             continue mainLoop
                         } else if (y + increaser > 10) {
-                            coordianates = []; 
-                            increaser = 0; 
+                            coordianates = [];
+                            increaser = 0;
                             continue mainLoop
                         }
                         coordianates.push([x, y + increaser]);
@@ -286,34 +286,34 @@ function createField(bot = false) {
                 }
 
             }
-            this.placeShip(coordianates[0], lengthOfShip, mainAxe) 
+            this.placeShip(coordianates[0], lengthOfShip, mainAxe)
         },
 
-        createRandomizedFleet() { 
-                this.placeShipAtRandomPosition(1)
-                this.placeShipAtRandomPosition(1)
-                this.placeShipAtRandomPosition(1)
-                this.placeShipAtRandomPosition(1)
-                this.placeShipAtRandomPosition(2)
-                this.placeShipAtRandomPosition(2)
-                this.placeShipAtRandomPosition(2)
-                this.placeShipAtRandomPosition(3)
-                this.placeShipAtRandomPosition(3)
-                this.placeShipAtRandomPosition(4)
+        createRandomizedFleet() {
+            this.placeShipAtRandomPosition(1)
+            this.placeShipAtRandomPosition(1)
+            this.placeShipAtRandomPosition(1)
+            this.placeShipAtRandomPosition(1)
+            this.placeShipAtRandomPosition(2)
+            this.placeShipAtRandomPosition(2)
+            this.placeShipAtRandomPosition(2)
+            this.placeShipAtRandomPosition(3)
+            this.placeShipAtRandomPosition(3)
+            this.placeShipAtRandomPosition(4)
         },
 
-        theGameEnds(){ 
-            if (confirm('The game has ended, wanna replay')) { 
-                        document.location.reload();
-            } else { 
+        theGameEnds() {
+            if (confirm('The game has ended, wanna replay')) {
+                document.location.reload();
+            } else {
                 alert('there`s nothing left to do, enjoy your self')
 
                 const fields = document.getElementsByClassName('battlefield');
-                Array.from(fields).forEach(field => { 
+                Array.from(fields).forEach(field => {
                     field.setAttribute('data', 'unclickable');
                 })
             }
-        }, 
+        },
 
         startTheGame(boolean) {
             if (boolean == false) return;
@@ -325,7 +325,7 @@ function createField(bot = false) {
                 counter.parentElement.parentElement.firstChild.classList.remove('draggableShip');
                 counter.parentElement.parentElement.firstChild.classList.add('draggableShipNotAnimated');
             })
-            
+
             const opponentsField = document.getElementById('oponents');
             opponentsField.removeAttribute('data', 'unclickable');
 
@@ -337,17 +337,17 @@ function createField(bot = false) {
             const randomizeShipButton = document.querySelector('button')
             randomizeShipButton.style.display = 'none';
         },
-            
 
-        areAllShipsPlaced() { 
-         return this.coordinates.ofShips.length == 20 ?  true : false ; 
+
+        areAllShipsPlaced() {
+            return this.coordinates.ofShips.length == 20 ? true : false;
         },
-        
+
         reseveArea(coordianates, mainAxe) {
             if (coordianates == null || coordianates == undefined) return
-            
+
             const reserve = [];
-            if (mainAxe == 'x') { 
+            if (mainAxe == 'x') {
                 for (let i = 0; i < coordianates.length; i++) {
                     if (i == 0) {
                         reserve.push([coordianates[i][0] - 1, coordianates[i][1]])
@@ -360,17 +360,17 @@ function createField(bot = false) {
                         reserve.push([coordianates[i][0] + 1, coordianates[i][1] + 1])
                         reserve.push([coordianates[i][0] + 1, coordianates[i][1] - 1])
                     }
-                   reserve.push([coordianates[i][0], coordianates[i][1] + 1])
-                   reserve.push([coordianates[i][0], coordianates[i][1] - 1])
+                    reserve.push([coordianates[i][0], coordianates[i][1] + 1])
+                    reserve.push([coordianates[i][0], coordianates[i][1] - 1])
                 }
-            } else { 
+            } else {
                 for (let i = 0; i < coordianates.length; i++) {
                     if (i == 0) {
-                        reserve.push([coordianates[i][0], coordianates[i][1] - 1] )
+                        reserve.push([coordianates[i][0], coordianates[i][1] - 1])
                         reserve.push([coordianates[i][0] + 1, coordianates[i][1] - 1])
                         reserve.push([coordianates[i][0] - 1, coordianates[i][1] - 1])
-                    }if (i == coordianates.length - 1) {
-                        reserve.push([coordianates[i][0], coordianates[i][1] + 1 ])
+                    } if (i == coordianates.length - 1) {
+                        reserve.push([coordianates[i][0], coordianates[i][1] + 1])
                         reserve.push([coordianates[i][0] + 1, coordianates[i][1] + 1])
                         reserve.push([coordianates[i][0] - 1, coordianates[i][1] + 1])
                     }
@@ -380,7 +380,7 @@ function createField(bot = false) {
             }
 
             let areaAroundShip = reserve.filter(result => {
-                if(!(result[0] < 1) && !(result[0] > 10) && !(result[1] < 1) && !(result[1] > 10) ) return true
+                if (!(result[0] < 1) && !(result[0] > 10) && !(result[1] < 1) && !(result[1] > 10)) return true
             })
 
             reserve.push(...coordianates);
@@ -390,14 +390,14 @@ function createField(bot = false) {
     }
 }
 
-function coordinatesOfEachCell(start, amountOfCells, mainAxe){
+function coordinatesOfEachCell(start, amountOfCells, mainAxe) {
     let coordinates = [];
-    for (let i = 0; i < amountOfCells; i++){ 
-        if (mainAxe == 'x' || !mainAxe) { 
-            coordinates.push([start[0]+i, start[1]])
+    for (let i = 0; i < amountOfCells; i++) {
+        if (mainAxe == 'x' || !mainAxe) {
+            coordinates.push([start[0] + i, start[1]])
         }
-        if (mainAxe == 'y' || !mainAxe) { 
-            coordinates.push([start[0], start[1]+i])
+        if (mainAxe == 'y' || !mainAxe) {
+            coordinates.push([start[0], start[1] + i])
         }
     }
     return coordinates
@@ -408,4 +408,4 @@ export default createField
 
 
 
-      
+

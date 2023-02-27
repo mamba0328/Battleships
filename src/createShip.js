@@ -3,6 +3,7 @@ const createShip = function (cells) {
         lenght: cells,
         hits: 0,
         sink: false,
+
         isSunk(whoAttacked) {
             if (this.hits == this.lenght) {
                 this.sink = true
@@ -12,7 +13,7 @@ const createShip = function (cells) {
         hit(whoAttacked) {
             this.hits++;
             this.isSunk(whoAttacked);
-        }, 
+        },
 
         decreaseNumberOfLeftShips(whoAttacked) {
             if (whoAttacked == 'bot') return
@@ -24,7 +25,7 @@ const createShip = function (cells) {
             counter.innerText = countNum;
         },
     };
-}  
+}
 
 export default createShip
 
